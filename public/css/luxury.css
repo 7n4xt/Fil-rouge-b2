@@ -847,6 +847,17 @@ p.lux-dropcap::first-letter {
     color: var(--muted-fg);
 }
 
+/* Dashboards (Member C) — compact rules */
+.lux-dash-stats { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); margin: 2rem 0 2.5rem; }
+.lux-stat { border-top: 1px solid var(--line); padding-top: 1rem; }
+.lux-stat__value { font-family: var(--font-serif); font-size: 1.75rem; margin: 0 0 0.25rem; }
+.lux-stat__label { font-size: 0.5625rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-fg); }
+.lux-table-wrap { overflow-x: auto; margin-top: 1rem; border-top: 1px solid var(--line); }
+.lux-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.lux-table th, .lux-table td { text-align: left; padding: 0.75rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.lux-table th { font-size: 0.5625rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; color: var(--muted-fg); }
+.lux-actions-footer { margin-top: 2rem; }
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
