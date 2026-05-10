@@ -27,12 +27,12 @@ require_once __DIR__ . '/../src/controllers/homeController.php';
 require_once __DIR__ . '/../src/controllers/loginController.php';
 require_once __DIR__ . '/../src/controllers/agentDashboardController.php';
 require_once __DIR__ . '/../src/controllers/adminDashboardController.php';
-require_once __DIR__ . '/../src/controllers/propertyLeadController.php';
-require_once __DIR__ . '/../src/controllers/clientAccountController.php';
-require_once __DIR__ . '/../src/controllers/agentDemandeController.php';
-require_once __DIR__ . '/../src/controllers/agentDossierController.php';
-require_once __DIR__ . '/../src/controllers/agentEstateController.php';
-require_once __DIR__ . '/../src/controllers/adminAnalyticsController.php';
+require_once __DIR__ . '/../src/controllers/PropertyLeadController.php';
+require_once __DIR__ . '/../src/controllers/ClientAccountController.php';
+require_once __DIR__ . '/../src/controllers/AgentDemandeController.php';
+require_once __DIR__ . '/../src/controllers/AgentDossierController.php';
+require_once __DIR__ . '/../src/controllers/AgentEstateController.php';
+require_once __DIR__ . '/../src/controllers/AdminAnalyticsController.php';
 
 function redirect(string $path): void
 {
