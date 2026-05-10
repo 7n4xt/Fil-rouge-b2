@@ -8,7 +8,7 @@ class HomeController
 
     public function index(): void
     {
-        $first_name = $_SESSION['first_name'] ?? null;
-        require __DIR__ . '/../views/home.php';
+        header('Location: /properties');
+        exit();
     }
 }

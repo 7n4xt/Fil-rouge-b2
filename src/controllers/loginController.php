@@ -15,8 +15,8 @@ class LoginController {
         if (!$user || !password_verify($password, $user['password'])) { $this->showLoginForm(['Invalid email or password.']); return; }
         session_regenerate_id(true); $_SESSION['user_id'] = (int) $user['user_id']; $_SESSION['first_name'] = $user['first_name'];
         $_SESSION['role'] = !empty($user['is_admin']) ? 'admin' : (!empty($user['is_agent']) ? 'agent' : 'user');
-        $redirect_path = $_SESSION['role'] === 'admin' ? '/admin' : ($_SESSION['role'] === 'agent' ? '/agent' : '/');
-        header('Location: ' . $redirect_path); exit();
+        header('Location: /properties');
+        exit();
     }
 
     public function logout(): void {
