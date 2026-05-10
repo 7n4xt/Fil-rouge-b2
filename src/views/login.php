@@ -15,6 +15,9 @@ require __DIR__ . '/partials/site_header.php';
             <?php if ($flash_success): ?>
                 <p class="lux-flash"><?= htmlspecialchars($flash_success, ENT_QUOTES, 'UTF-8') ?></p>
             <?php endif; ?>
+            <?php if (!empty($flash_error_redirect)): ?>
+                <ul class="lux-errors"><li><?= htmlspecialchars($flash_error_redirect, ENT_QUOTES, 'UTF-8') ?></li></ul>
+            <?php endif; ?>
             <?php if (!empty($errors)): ?>
                 <ul class="lux-errors">
                     <?php foreach ($errors as $error): ?>
@@ -23,6 +26,7 @@ require __DIR__ . '/partials/site_header.php';
                 </ul>
             <?php endif; ?>
             <form class="lux-form" method="post" action="/login" autocomplete="on">
+                <?php require __DIR__ . '/partials/csrf_field.php'; ?>
                 <div class="lux-field">
                     <label for="mail">Courriel</label>
                     <input class="lux-input" type="email" name="mail" id="mail" placeholder="votre adresse" required>
@@ -39,7 +43,7 @@ require __DIR__ . '/partials/site_header.php';
         </div>
         <aside class="lux-auth-aside">
             <p class="lux-overline">Après connexion</p>
-            <p class="lux-lede lux-lede--flush">Vous serez redirigé vers la page <strong>Collection</strong> (<code class="lux-code">/properties</code>), le cœur de la plateforme.</p>
+            <p class="lux-lede lux-lede--flush">Les comptes <strong>client</strong> arrivent sur <code class="lux-code">/account</code> ; les autres profils sur la collection.</p>
         </aside>
     </div>
 </main>

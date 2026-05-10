@@ -123,6 +123,7 @@ class PropertyDetailModel {
                     e.price,
                     e.surface,
                     e.rooms_count,
+                    e.bedrooms_count,
                     COALESCE(p.url_path, 'pictures/house/default.jpg') as main_photo
                 FROM estate e
                 LEFT JOIN photo p ON e.estate_id = p.estate_id

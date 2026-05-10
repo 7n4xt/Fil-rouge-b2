@@ -4,10 +4,15 @@ class LoginController {
     private LoginModel $login_model;
     public function __construct(PDO $pdo) { $this->login_model = new LoginModel($pdo); }
     public function showLoginForm(array $errors = []): void {
-        $flash_success = $_SESSION['flash_success'] ?? null; unset($_SESSION['flash_success']); require __DIR__ . '/../views/login.php';
+        $flash_success = $_SESSION['flash_success'] ?? null;
+        unset($_SESSION['flash_success']);
+        $flash_error_redirect = $_SESSION['flash_error'] ?? null;
+        unset($_SESSION['flash_error']);
+        require __DIR__ . '/../views/login.php';
     }
     public function login(): void {
         $mail = trim($_POST['mail'] ?? ''); $password = $_POST['password'] ?? ''; $errors = [];
+        if (!lux_csrf_validate($_POST['csrf_token'] ?? null)) { $errors[] = 'Invalid security token. Please try again.'; }
         if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) { $errors[] = 'Please provide a valid email.'; }
         if ($password === '') { $errors[] = 'Password is required.'; }
         if (!empty($errors)) { $this->showLoginForm($errors); return; }
@@ -15,7 +20,8 @@ class LoginController {
         if (!$user || !password_verify($password, $user['password'])) { $this->showLoginForm(['Invalid email or password.']); return; }
         session_regenerate_id(true); $_SESSION['user_id'] = (int) $user['user_id']; $_SESSION['first_name'] = $user['first_name'];
         $_SESSION['role'] = !empty($user['is_admin']) ? 'admin' : (!empty($user['is_agent']) ? 'agent' : 'user');
-        header('Location: /properties');
+        $target = $_SESSION['role'] === 'user' ? '/account' : '/properties';
+        header('Location: ' . $target);
         exit();
     }
 

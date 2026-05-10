@@ -10,6 +10,13 @@ require __DIR__ . '/partials/site_header.php';
     <div class="lux-container">
         <a class="lux-back" href="/properties">Retour à la collection</a>
 
+        <?php if (!empty($data['flash_success'])): ?>
+            <p class="lux-flash"><?= htmlspecialchars($data['flash_success'], ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
+        <?php if (!empty($data['flash_error'])): ?>
+            <ul class="lux-errors"><li><?= htmlspecialchars($data['flash_error'], ENT_QUOTES, 'UTF-8') ?></li></ul>
+        <?php endif; ?>
+
         <div class="lux-gallery">
             <div class="lux-gallery__main">
                 <img id="mainImage" src="/<?= htmlspecialchars($main_photo, ENT_QUOTES, 'UTF-8') ?>"
@@ -105,6 +112,42 @@ require __DIR__ . '/partials/site_header.php';
                                 <a class="lux-btn lux-btn--secondary" href="mailto:<?= htmlspecialchars($data['mail'], ENT_QUOTES, 'UTF-8') ?>"><span>Écrire</span></a>
                             <?php endif; ?>
                         </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($data['is_client'])): ?>
+                    <div class="lux-side-card">
+                        <h3>Demande d’infos ou visite</h3>
+                        <p class="lux-lede lux-lede--flush">Votre message est transmis à l’agence et visible dans <a class="lux-link" href="/account">Mon espace</a>.</p>
+                        <form class="lux-form lux-form--compact" method="post" action="/properties/<?= (int) $data['estate_id'] ?>">
+                            <?php require __DIR__ . '/partials/csrf_field.php'; ?>
+                            <div class="lux-field">
+                                <label for="request_kind">Type</label>
+                                <select class="lux-input" name="request_kind" id="request_kind">
+                                    <option value="information">Demande d’information</option>
+                                    <option value="visite">Demande de visite</option>
+                                </select>
+                            </div>
+                            <div class="lux-field">
+                                <label for="message">Message</label>
+                                <textarea class="lux-input" name="message" id="message" rows="3" placeholder="Votre question ou précisions"></textarea>
+                            </div>
+                            <div class="lux-field">
+                                <label for="preferred_visit_at">Créneau souhaité (visite)</label>
+                                <input class="lux-input" type="datetime-local" name="preferred_visit_at" id="preferred_visit_at">
+                            </div>
+                            <button class="lux-btn lux-btn--primary" type="submit"><span>Envoyer</span></button>
+                        </form>
+                    </div>
+                <?php elseif (in_array($_SESSION['role'] ?? '', ['admin', 'agent'], true)): ?>
+                    <div class="lux-side-card">
+                        <h3>Demandes clients</h3>
+                        <p class="lux-lede lux-lede--flush">Les formulaires clients sont réservés aux comptes « client ». Gérez les dossiers depuis votre espace pro.</p>
+                    </div>
+                <?php elseif (empty($_SESSION['user_id'])): ?>
+                    <div class="lux-side-card">
+                        <h3>Demande d’infos ou visite</h3>
+                        <p class="lux-lede lux-lede--flush"><a class="lux-link" href="/login">Connectez-vous</a> avec un compte client pour envoyer une demande structurée. Les coordonnées ci-dessus restent disponibles.</p>
                     </div>
                 <?php endif; ?>
             </aside>

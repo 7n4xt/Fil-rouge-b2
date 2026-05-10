@@ -252,6 +252,17 @@ body.lux-body {
     max-width: 28rem;
 }
 
+.lux-form--compact {
+    gap: 1rem;
+    max-width: none;
+}
+
+textarea.lux-input {
+    min-height: 4.5rem;
+    height: auto;
+    padding-top: 0.75rem;
+}
+
 .lux-field {
     display: flex;
     flex-direction: column;

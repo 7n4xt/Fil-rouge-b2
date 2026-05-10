@@ -39,6 +39,13 @@ CREATE TABLE IF NOT EXISTS `agence` (
 -- --------------------------------------------------------
 
 --
+-- Dépendances : à supprimer avant `estate` et `user_`
+--
+
+DROP TABLE IF EXISTS `lead_request`;
+DROP TABLE IF EXISTS `client_dossier`;
+
+--
 -- Structure de la table `estate`
 --
 
@@ -150,6 +157,53 @@ CREATE TABLE IF NOT EXISTS `user_` (
   UNIQUE KEY `mail` (`mail`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Demandes clients (infos / visites) sur un bien
+--
+
+CREATE TABLE IF NOT EXISTS `lead_request` (
+  `lead_request_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `estate_id` int NOT NULL,
+  `request_kind` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'information',
+  `message` text COLLATE utf8mb4_unicode_ci,
+  `preferred_visit_at` datetime DEFAULT NULL,
+  `status` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'nouveau',
+  `agent_note` text COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lead_request_id`),
+  KEY `user_id` (`user_id`),
+  KEY `estate_id` (`estate_id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Dossiers client (suivi achat / vente)
+--
+
+CREATE TABLE IF NOT EXISTS `client_dossier` (
+  `dossier_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `agent_id` int NOT NULL,
+  `estate_id` int DEFAULT NULL,
+  `flow_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'achat',
+  `step` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'contact',
+  `title` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes_public` text COLLATE utf8mb4_unicode_ci,
+  `notes_internal` text COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`dossier_id`),
+  KEY `user_id` (`user_id`),
+  KEY `agent_id` (`agent_id`),
+  KEY `estate_id` (`estate_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Données de démonstration : agences, agents, annonces fictives et photos
 --
@@ -167,7 +221,8 @@ INSERT INTO `user_` (`user_id`, `first_name`, `last_name`, `mail`, `phone_number
 (1, 'Camille', 'Lefèvre', 'admin@ymm.demo', '+33 6 11 22 33 44', 1, 0, '$2y$12$zMgq3H/rPo4JbKGO2I/ffuvgispGOGgHAXCT7tJUqW6Yow5c2.sD2'),
 (2, 'Marie', 'Dubois', 'marie.dubois@ymm.demo', '+33 6 21 32 43 54', 0, 1, '$2y$12$zMgq3H/rPo4JbKGO2I/ffuvgispGOGgHAXCT7tJUqW6Yow5c2.sD2'),
 (3, 'Lucas', 'Martin', 'lucas.martin@ymm.demo', '+33 6 31 42 53 64', 0, 1, '$2y$12$zMgq3H/rPo4JbKGO2I/ffuvgispGOGgHAXCT7tJUqW6Yow5c2.sD2'),
-(4, 'Sofia', 'Bernard', 'sofia.bernard@ymm.demo', '+33 6 41 52 63 74', 0, 1, '$2y$12$zMgq3H/rPo4JbKGO2I/ffuvgispGOGgHAXCT7tJUqW6Yow5c2.sD2');
+(4, 'Sofia', 'Bernard', 'sofia.bernard@ymm.demo', '+33 6 41 52 63 74', 0, 1, '$2y$12$zMgq3H/rPo4JbKGO2I/ffuvgispGOGgHAXCT7tJUqW6Yow5c2.sD2'),
+(5, 'Jean', 'Client', 'client@ymm.demo', '+33 6 55 66 77 88', 0, 0, '$2y$12$zMgq3H/rPo4JbKGO2I/ffuvgispGOGgHAXCT7tJUqW6Yow5c2.sD2');
 
 INSERT INTO `estate` (`estate_country`, `estate_address`, `estate_type`, `price`, `surface`, `rooms_count`, `bedrooms_count`, `description`, `estate_status`, `energy_class`, `agent_id`, `agence_id`) VALUES
 ('France', '18 rue Montorgueil, 75002 Paris', 'Appartement', 685000.00, 72, 3, 2, 'Bel appartement traversant au 4e étage avec balcon filant. Cuisine ouverte équipée, parquet massif, double vitrage récent. Quartier piéton vibrant, commerces et métro à deux pas. Idéal premier achat ou pied-à-terre.', 'available', 'C', 2, 1),

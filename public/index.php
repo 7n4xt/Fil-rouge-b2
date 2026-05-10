@@ -1,8 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+$secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => $secure,
+    'httponly' => true,
+    'samesite' => 'Lax',
+]);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+require_once __DIR__ . '/../src/helpers/csrf.php';
 
 require_once __DIR__ . '/../src/config/database.php';
 
@@ -13,6 +27,12 @@ require_once __DIR__ . '/../src/controllers/homeController.php';
 require_once __DIR__ . '/../src/controllers/loginController.php';
 require_once __DIR__ . '/../src/controllers/agentDashboardController.php';
 require_once __DIR__ . '/../src/controllers/adminDashboardController.php';
+require_once __DIR__ . '/../src/controllers/propertyLeadController.php';
+require_once __DIR__ . '/../src/controllers/clientAccountController.php';
+require_once __DIR__ . '/../src/controllers/agentDemandeController.php';
+require_once __DIR__ . '/../src/controllers/agentDossierController.php';
+require_once __DIR__ . '/../src/controllers/agentEstateController.php';
+require_once __DIR__ . '/../src/controllers/adminAnalyticsController.php';
 
 function redirect(string $path): void
 {
@@ -58,6 +78,10 @@ try {
         case '/properties':
             (new PropertyListController($pdo))->index();
             break;
+        case '/account':
+            require_auth('user');
+            (new ClientAccountController($pdo))->index();
+            break;
         case '/register':
             $c = new RegisterController($pdo);
             $request_method === 'POST' ? $c->register() : $c->showRegistrationForm();
@@ -73,13 +97,54 @@ try {
             require_auth('admin');
             (new AdminDashboardController($pdo))->index();
             break;
+        case '/admin/analytics':
+            require_auth('admin');
+            (new AdminAnalyticsController($pdo))->index();
+            break;
         case '/agent':
             require_auth('agent');
             (new AgentDashboardController($pdo))->index();
             break;
+        case '/agent/demandes':
+            require_auth('agent');
+            $c = new AgentDemandeController($pdo);
+            $request_method === 'POST' ? $c->update() : $c->index();
+            break;
+        case '/agent/dossiers':
+            require_auth('agent');
+            $c = new AgentDossierController($pdo);
+            if ($request_method === 'POST') {
+                if (isset($_POST['create_dossier'])) {
+                    $c->create();
+                } else {
+                    $c->update();
+                }
+            } else {
+                $c->index();
+            }
+            break;
+        case '/agent/biens':
+            require_auth('agent');
+            (new AgentEstateController($pdo))->index();
+            break;
+        case '/agent/biens/nouveau':
+            require_auth('agent');
+            $c = new AgentEstateController($pdo);
+            $request_method === 'POST' ? $c->create() : $c->newForm();
+            break;
         default:
             if (preg_match('#^/properties/(\d+)$#', $request_uri, $matches)) {
-                (new PropertyDetailController($pdo))->show((int) $matches[1]);
+                $pid = (int) $matches[1];
+                if ($request_method === 'POST') {
+                    (new PropertyLeadController($pdo))->submit($pid);
+                } else {
+                    (new PropertyDetailController($pdo))->show($pid);
+                }
+            } elseif (preg_match('#^/agent/biens/editer/(\d+)$#', $request_uri, $matches)) {
+                require_auth('agent');
+                $eid = (int) $matches[1];
+                $c = new AgentEstateController($pdo);
+                $request_method === 'POST' ? $c->update($eid) : $c->editForm($eid);
             } else {
                 render_http_error(404, 'Page introuvable', 'L’URL demandée ne correspond à aucune ressource du site.');
             }

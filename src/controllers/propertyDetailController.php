@@ -28,6 +28,11 @@ class PropertyDetailController {
             // Get similar properties
             $data['similar'] = $this->model->getSimilarProperties($estateId);
 
+            $data['flash_success'] = $_SESSION['flash_success'] ?? null;
+            $data['flash_error'] = $_SESSION['flash_error'] ?? null;
+            unset($_SESSION['flash_success'], $_SESSION['flash_error']);
+            $data['is_client'] = ($_SESSION['role'] ?? null) === 'user';
+
             // Load view
             require __DIR__ . '/../views/propertyDetail.php';
         } catch (Exception $e) {

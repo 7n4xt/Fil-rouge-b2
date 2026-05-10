@@ -78,6 +78,7 @@ require __DIR__ . '/partials/site_header.php';
         </section>
 
         <div class="lux-btn-row lux-actions-footer">
+            <a class="lux-btn lux-btn--primary" href="/admin/analytics"><span>Marché & tendances</span></a>
             <a class="lux-btn lux-btn--secondary" href="/properties"><span>Collection</span></a>
             <a class="lux-link" href="/logout">Déconnexion</a>
         </div>

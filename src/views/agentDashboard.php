@@ -10,6 +10,13 @@ require __DIR__ . '/partials/site_header.php';
         <h1 class="lux-title">Portefeuille <em>mandats</em></h1>
         <p class="lux-lede">Synthèse de vos annonces et des opérations liées à vos biens.</p>
 
+        <div class="lux-btn-row lux-section-spaced">
+            <a class="lux-btn lux-btn--secondary" href="/agent/biens"><span>Mes biens</span></a>
+            <a class="lux-btn lux-btn--secondary" href="/agent/biens/nouveau"><span>Nouvelle annonce</span></a>
+            <a class="lux-btn lux-btn--secondary" href="/agent/demandes"><span>Demandes clients</span></a>
+            <a class="lux-btn lux-btn--secondary" href="/agent/dossiers"><span>Dossiers</span></a>
+        </div>
+
         <div class="lux-dash-stats">
             <div class="lux-stat"><p class="lux-stat__value"><?= (int) $s['listing_count'] ?></p><p class="lux-stat__label">Mandats actifs</p></div>
             <div class="lux-stat"><p class="lux-stat__value"><?= number_format($s['avg_price'], 0, ',', ' ') ?> €</p><p class="lux-stat__label">Prix moyen</p></div>

@@ -7,6 +7,7 @@ class RegisterController {
     public function register(): void {
         $old = ['first_name' => trim($_POST['first_name'] ?? ''), 'last_name' => trim($_POST['last_name'] ?? ''), 'mail' => trim($_POST['mail'] ?? ''), 'phone_number' => trim($_POST['phone_number'] ?? '')];
         $password = $_POST['password'] ?? ''; $password_confirm = $_POST['password_confirm'] ?? ''; $errors = [];
+        if (!lux_csrf_validate($_POST['csrf_token'] ?? null)) { $errors[] = 'Invalid security token. Please try again.'; }
         if ($old['first_name'] === '' || $old['last_name'] === '') { $errors[] = 'First and last name are required.'; }
         if (!filter_var($old['mail'], FILTER_VALIDATE_EMAIL)) { $errors[] = 'Please provide a valid email.'; }
         if (strlen($password) < 8) { $errors[] = 'Password must contain at least 8 characters.'; }

@@ -9,11 +9,18 @@ $nav_first_name = $_SESSION['first_name'] ?? null;
             <a class="lux-nav__link" href="/properties">Collection</a>
             <?php if ($nav_first_name): ?>
                 <span class="lux-nav__meta"><?= htmlspecialchars($nav_first_name, ENT_QUOTES, 'UTF-8') ?></span>
+                <?php if ($nav_role === 'user'): ?>
+                    <a class="lux-nav__link" href="/account">Mon espace</a>
+                <?php endif; ?>
                 <?php if ($nav_role === 'admin'): ?>
                     <a class="lux-nav__link" href="/admin">Administration</a>
+                    <a class="lux-nav__link" href="/admin/analytics">Marché & tendances</a>
                 <?php endif; ?>
                 <?php if ($nav_role === 'agent'): ?>
                     <a class="lux-nav__link" href="/agent">Espace agent</a>
+                    <a class="lux-nav__link" href="/agent/biens">Mes biens</a>
+                    <a class="lux-nav__link" href="/agent/demandes">Demandes</a>
+                    <a class="lux-nav__link" href="/agent/dossiers">Dossiers</a>
                 <?php endif; ?>
                 <a class="lux-nav__link" href="/logout">Déconnexion</a>
             <?php else: ?>

@@ -20,6 +20,7 @@ require __DIR__ . '/partials/site_header.php';
                 </ul>
             <?php endif; ?>
             <form class="lux-form" method="post" action="/register" autocomplete="on">
+                <?php require __DIR__ . '/partials/csrf_field.php'; ?>
                 <div class="lux-field">
                     <label for="first_name">Prénom</label>
                     <input class="lux-input" name="first_name" id="first_name" placeholder="prénom" value="<?= htmlspecialchars($old['first_name'] ?? '', ENT_QUOTES, 'UTF-8') ?>" required>
