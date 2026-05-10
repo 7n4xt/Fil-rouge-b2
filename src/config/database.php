@@ -20,10 +20,14 @@ class Database
             }
         }
 
-        foreach (['DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD'] as $key) {
+        foreach (['DB_HOST', 'DB_NAME', 'DB_USERNAME'] as $key) {
             if (empty($_ENV[$key])) {
                 throw new RuntimeException('Missing or empty environment variable: ' . $key);
             }
+        }
+        // Mot de passe vide autorisé (ex. MySQL local root sans mot de passe).
+        if (!array_key_exists('DB_PASSWORD', $_ENV)) {
+            throw new RuntimeException('Missing environment variable: DB_PASSWORD (mettez DB_PASSWORD= même vide)');
         }
 
         $host = $_ENV['DB_HOST'];

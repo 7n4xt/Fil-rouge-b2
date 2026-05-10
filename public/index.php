@@ -64,7 +64,18 @@ try {
     $pdo = Database::getConnection();
 } catch (Throwable $e) {
     error_log('Application bootstrap (database): ' . $e->getMessage());
-    render_http_error(503, 'Service indisponible', 'La base de données est momentanément inaccessible. Réessayez plus tard.');
+    $msg = $e->getMessage();
+    $hint = 'Vérifiez que MySQL/MariaDB est démarré, que la base existe, et que les identifiants dans .env sont corrects.';
+    if (str_contains($msg, 'Missing') || str_contains($msg, 'environment variable')) {
+        $hint = 'Créez un fichier .env à la racine du projet (copiez .env.example) et renseignez DB_HOST, DB_NAME, DB_USERNAME et DB_PASSWORD.';
+    } elseif (str_contains($msg, '2002') || str_contains($msg, 'refused') || str_contains($msg, 'actively refused')) {
+        $hint = 'MySQL ne répond pas sur ce serveur/port : démarrez le service MySQL (XAMPP/WAMP/MariaDB) ou corrigez DB_HOST.';
+    } elseif (str_contains($msg, '1049') || str_contains($msg, 'Unknown database')) {
+        $hint = 'La base indiquée dans DB_NAME n’existe pas : créez-la ou importez real_estate.sql.';
+    } elseif (str_contains($msg, '1045') || str_contains($msg, 'Access denied')) {
+        $hint = 'Identifiants refusés : vérifiez DB_USERNAME et DB_PASSWORD dans .env.';
+    }
+    render_http_error(503, 'Base de données inaccessible', $hint . ' (détail technique : ' . $msg . ')');
 }
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
