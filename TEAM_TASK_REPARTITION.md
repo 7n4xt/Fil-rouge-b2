@@ -29,7 +29,7 @@
 - `src/controllers/propertyListController.php`
 - `src/controllers/propertyDetailController.php`
 - `src/models/propertyListModel.php`
-- `src/models/prop#ertyDetailModel.php`
+- `src/models/propertyDetailModel.php`
 - `src/views/propertyList.php`
 - `src/views/propertyDetail.php`
 
@@ -51,11 +51,22 @@
 - `src/views/agentDashboard.php`
 - `public/index.php`
 - `src/config/database.php`
+- `scripts/qa-smoke.php` (pass QA automatisé — lint PHP)
 
 **Tasks:**
 1. Implement admin and agent dashboard data.
 2. Maintain routing integration and shared error handling.
 3. Own final QA pass and bug triage across all modules.
+
+**Status (QA closure):** tâches 1–2 livrées dans le code ; tâche 3 clôturée par le script `scripts/qa-smoke.php` + contrôle manuel ci‑dessous.
+
+**Manual smoke checklist (before handoff):**
+- [ ] `php scripts/qa-smoke.php` → exit 0
+- [ ] `/`, `/properties`, `/properties/{id}` → 200, pas de notice PHP
+- [ ] `/register` (GET/POST valide), `/login`, `/logout` → flux OK
+- [ ] `/admin` sans session → 401 ; avec user non admin → 403 ; admin → dashboard
+- [ ] `/agent` sans session → 401 ; user standard → 403 ; agent → dashboard
+- [ ] URL inconnue → 404 ; coupure DB simulée → 503 au bootstrap
 
 **Deliverable:**
 - Stable app integration and dashboard access by role.
