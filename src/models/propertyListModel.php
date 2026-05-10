@@ -71,11 +71,8 @@ class PropertyListModel {
                 WHERE " . $whereClause . "
                 GROUP BY e.estate_id
                 ORDER BY e.estate_id DESC
-                LIMIT ? OFFSET ?
+                LIMIT " . self::ITEMS_PER_PAGE . " OFFSET " . $offset . "
             ";
-            
-            $params[] = self::ITEMS_PER_PAGE;
-            $params[] = $offset;
 
             $stmt = $this->pdo->prepare($query);
             $stmt->execute($params);
