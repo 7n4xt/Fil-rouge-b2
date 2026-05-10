@@ -1,32 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.3
--- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 02 avr. 2026 à 12:14
--- Version du serveur : 8.4.7
--- Version de PHP : 8.3.28
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de données : `real_estate`
---
-
--- --------------------------------------------------------
-
---
--- Structure de la table `agence`
---
-
 DROP TABLE IF EXISTS `agence`;
 CREATE TABLE IF NOT EXISTS `agence` (
   `agence_id` int NOT NULL AUTO_INCREMENT,
@@ -465,11 +436,6 @@ INSERT INTO `photo` (`url_path`, `estate_id`) VALUES
 ('pictures/appartement/appart1-swimingpool.jpg', 35),
 ('pictures/house/36.jpg', 36);
 
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 INSERT INTO user_ (first_name, last_name, mail, phone_number, is_admin, is_agent, password) VALUES
 ('Malek', 'Esughi', 'malek@example.com', NULL, 1, 0, '$2y$12$OEOosIFwaSMJ8I.X5FFd6eOEkF3qPax7QU1jcAVuvtwx8cyBQruiC'),
 ('Victor', 'Uzodimma', 'victor@example.com', NULL, 0, 1, '$2y$12$OEOosIFwaSMJ8I.X5FFd6eOEkF3qPax7QU1jcAVuvtwx8cyBQruiC');
