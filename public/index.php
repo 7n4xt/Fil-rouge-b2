@@ -82,7 +82,14 @@ switch ($request_uri) {
         $controller->index();
         break;
     default:
-        http_response_code(404);
-        echo "Page not found.";
+        // Check for property detail route /properties/{id}
+        if (preg_match('#^/properties/(\d+)$#', $request_uri, $matches)) {
+            $estateId = intval($matches[1]);
+            $controller = new PropertyDetailController($pdo);
+            $controller->show($estateId);
+        } else {
+            http_response_code(404);
+            echo "Page not found.";
+        }
         break;
 }

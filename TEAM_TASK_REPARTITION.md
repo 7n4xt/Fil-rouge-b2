@@ -24,12 +24,12 @@
 **Deliverable:**
 - Fully working auth routes in `public/index.php`.
 
-### 2) Member B: Property Catalog (Main Business Feature Owner)
+## 2) Member B: Property Catalog (Main Business Feature Owner)
 **Own files:**
 - `src/controllers/propertyListController.php`
 - `src/controllers/propertyDetailController.php`
 - `src/models/propertyListModel.php`
-- `src/models/propertyDetailModel.php`
+- `src/models/prop#ertyDetailModel.php`
 - `src/views/propertyList.php`
 - `src/views/propertyDetail.php`
 
