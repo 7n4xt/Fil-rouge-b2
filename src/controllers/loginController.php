@@ -15,6 +15,18 @@ class LoginController {
         if (!$user || !password_verify($password, $user['password'])) { $this->showLoginForm(['Invalid email or password.']); return; }
         session_regenerate_id(true); $_SESSION['user_id'] = (int) $user['user_id']; $_SESSION['first_name'] = $user['first_name'];
         $_SESSION['role'] = !empty($user['is_admin']) ? 'admin' : (!empty($user['is_agent']) ? 'agent' : 'user');
-        header('Location: /'); exit();
+        $redirect_path = $_SESSION['role'] === 'admin' ? '/admin' : ($_SESSION['role'] === 'agent' ? '/agent' : '/');
+        header('Location: ' . $redirect_path); exit();
+    }
+
+    public function logout(): void {
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
+        session_destroy();
+        header('Location: /login');
+        exit();
     }
 }

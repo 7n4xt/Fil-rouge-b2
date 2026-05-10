@@ -24,6 +24,19 @@ function redirect($path) {
     exit();
 }
 
+function require_auth(?string $role = null): void {
+    if (empty($_SESSION['user_id'])) {
+        http_response_code(401);
+        echo 'Unauthorized. Please login.';
+        exit();
+    }
+    if ($role !== null && ($_SESSION['role'] ?? null) !== $role) {
+        http_response_code(403);
+        echo 'Forbidden.';
+        exit();
+    }
+}
+
 // Get the request URI and method
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $request_method = $_SERVER['REQUEST_METHOD'];
@@ -53,6 +66,20 @@ switch ($request_uri) {
         } else {
             $controller->showLoginForm();
         }
+        break;
+    case '/logout':
+        $controller = new LoginController($pdo);
+        $controller->logout();
+        break;
+    case '/admin':
+        require_auth('admin');
+        $controller = new AdminDashboardController($pdo);
+        $controller->index();
+        break;
+    case '/agent':
+        require_auth('agent');
+        $controller = new AgentDashboardController($pdo);
+        $controller->index();
         break;
     default:
         http_response_code(404);
