@@ -179,8 +179,8 @@ CREATE TABLE IF NOT EXISTS `client_dossier` (
 -- Données de démonstration : agences, agents, annonces fictives et photos
 --
 -- Images (sous public/) :
---   public/pictures/appartement/ — fichiers appart1-*.jpg … appart5-*.jpg (voir INSERT photo)
---   public/pictures/house/       — Maison, Chalet, Villa : {estate_id}.jpg tant que pas d’autres fichiers
+--   public/pictures/appartement/ — fichiers historiques uniques pour les biens 1, 3, 4, 5 et 7
+--   public/pictures/estates/estate-XX/ — nouvelles galeries uniques par annonce
 --
 
 INSERT INTO `agence` (`agence_id`, `country`, `agence_address`, `agence_name`) VALUES
@@ -240,7 +240,11 @@ INSERT INTO `photo` (`url_path`, `estate_id`) VALUES
 ('pictures/appartement/appart1-bedroom1.jpg', 1),
 ('pictures/appartement/appart1-bedroom2.jpg', 1),
 ('pictures/appartement/appart1-swimingpool.jpg', 1),
-('pictures/house/2.jpg', 2),
+('pictures/estates/estate-02/exterior.jpg', 2),
+('pictures/estates/estate-02/living-room.jpg', 2),
+('pictures/estates/estate-02/kitchen.jpg', 2),
+('pictures/estates/estate-02/bedroom.jpg', 2),
+('pictures/estates/estate-02/bathroom.jpg', 2),
 ('pictures/appartement/appart2.jpg', 3),
 ('pictures/appartement/appart2-salon.jpg', 3),
 ('pictures/appartement/appart2-kitchen.jpg', 3),
@@ -262,7 +266,11 @@ INSERT INTO `photo` (`url_path`, `estate_id`) VALUES
 ('pictures/appartement/appart4-bedroom2.jpg', 5),
 ('pictures/appartement/appart4-bathroom1.jpg', 5),
 ('pictures/appartement/appart4-bathroom-image2.jpg', 5),
-('pictures/house/6.jpg', 6),
+('pictures/estates/estate-06/exterior.jpg', 6),
+('pictures/estates/estate-06/living-room.jpg', 6),
+('pictures/estates/estate-06/kitchen.jpg', 6),
+('pictures/estates/estate-06/bedroom.jpg', 6),
+('pictures/estates/estate-06/bathroom.jpg', 6),
 ('pictures/appartement/appart5-ex.jpg', 7),
 ('pictures/appartement/appart5-livingroom.jpg', 7),
 ('pictures/appartement/appart5-livingroom2.jpg', 7),
@@ -273,60 +281,189 @@ INSERT INTO `photo` (`url_path`, `estate_id`) VALUES
 ('pictures/appartement/appart5-bathroom-image2.jpg', 7),
 ('pictures/appartement/appart5-garage.jpg', 7),
 ('pictures/appartement/appart5-swimingpool.jpg', 7),
-('pictures/house/10.jpg', 10),
-('pictures/house/14.jpg', 14),
-('pictures/house/16.jpg', 16),
-('pictures/appartement/appart2.jpg', 17),
-('pictures/appartement/appart2-salon.jpg', 17),
-('pictures/appartement/appart2-kitchen.jpg', 17),
-('pictures/appartement/appart2-bedroom.jpg', 17),
-('pictures/appartement/appart2-bedroom2.jpg', 17),
-('pictures/appartement/appart2-bathroom.jpg', 17),
-('pictures/appartement/appart3-linvingroom.jpg', 18),
-('pictures/appartement/appart3-linvingroom2.jpg', 18),
-('pictures/appartement/appart3-kitchen.jpg', 18),
-('pictures/appartement/appart3-bedroom1.jpg', 18),
-('pictures/appartement/appart3-bedroom2.jpg', 18),
-('pictures/appartement/appart3-bathroom.jpg', 18),
-('pictures/house/19.jpg', 19),
-('pictures/appartement/appart4-exe.jpg', 20),
-('pictures/appartement/appart4-livingroom.jpg', 20),
-('pictures/appartement/appart4-livingroom-image2.jpg', 20),
-('pictures/appartement/appart4-kitchen.jpg', 20),
-('pictures/appartement/appart4-kitchen2.jpg', 20),
-('pictures/appartement/appart4-bedroom1.jpg', 20),
-('pictures/appartement/appart4-bedroom2.jpg', 20),
-('pictures/appartement/appart4-bathroom1.jpg', 20),
-('pictures/appartement/appart4-bathroom-image2.jpg', 20),
-('pictures/appartement/appart5-ex.jpg', 21),
-('pictures/appartement/appart5-livingroom.jpg', 21),
-('pictures/appartement/appart5-livingroom2.jpg', 21),
-('pictures/appartement/appart5-kitchen.jpg', 21),
-('pictures/appartement/appart5-bedroom1.jpg', 21),
-('pictures/appartement/appart5-bedroom2.jpg', 21),
-('pictures/appartement/appart5-bathroom1.jpg', 21),
-('pictures/appartement/appart5-bathroom-image2.jpg', 21),
-('pictures/appartement/appart5-garage.jpg', 21),
-('pictures/appartement/appart5-swimingpool.jpg', 21),
-('pictures/house/24.jpg', 24),
-('pictures/appartement/appart3-linvingroom.jpg', 25),
-('pictures/appartement/appart3-linvingroom2.jpg', 25),
-('pictures/appartement/appart3-kitchen.jpg', 25),
-('pictures/appartement/appart3-bedroom1.jpg', 25),
-('pictures/appartement/appart3-bedroom2.jpg', 25),
-('pictures/appartement/appart3-bathroom.jpg', 25),
-('pictures/house/30.jpg', 30),
-('pictures/appartement/appart3-linvingroom.jpg', 31),
-('pictures/appartement/appart3-linvingroom2.jpg', 31),
-('pictures/appartement/appart3-kitchen.jpg', 31),
-('pictures/appartement/appart3-bedroom1.jpg', 31),
-('pictures/appartement/appart3-bedroom2.jpg', 31),
-('pictures/appartement/appart3-bathroom.jpg', 31),
-('pictures/house/34.jpg', 34),
-('pictures/house/36.jpg', 36);
+('pictures/estates/estate-08/exterior.jpg', 8),
+('pictures/estates/estate-08/living-room.jpg', 8),
+('pictures/estates/estate-08/kitchen.jpg', 8),
+('pictures/estates/estate-08/bedroom.jpg', 8),
+('pictures/estates/estate-08/bathroom.jpg', 8),
+('pictures/estates/estate-09/exterior.jpg', 9),
+('pictures/estates/estate-09/living-room.jpg', 9),
+('pictures/estates/estate-09/kitchen.jpg', 9),
+('pictures/estates/estate-09/bedroom.jpg', 9),
+('pictures/estates/estate-09/bathroom.jpg', 9),
+('pictures/estates/estate-10/exterior.jpg', 10),
+('pictures/estates/estate-10/living-room.jpg', 10),
+('pictures/estates/estate-10/kitchen.jpg', 10),
+('pictures/estates/estate-10/bedroom.jpg', 10),
+('pictures/estates/estate-10/bathroom.jpg', 10),
+('pictures/estates/estate-11/exterior.jpg', 11),
+('pictures/estates/estate-11/living-room.jpg', 11),
+('pictures/estates/estate-11/kitchen.jpg', 11),
+('pictures/estates/estate-11/bedroom.jpg', 11),
+('pictures/estates/estate-11/bathroom.jpg', 11),
+('pictures/estates/estate-12/exterior.jpg', 12),
+('pictures/estates/estate-12/living-room.jpg', 12),
+('pictures/estates/estate-12/kitchen.jpg', 12),
+('pictures/estates/estate-12/bedroom.jpg', 12),
+('pictures/estates/estate-12/bathroom.jpg', 12),
+('pictures/estates/estate-13/exterior.jpg', 13),
+('pictures/estates/estate-13/living-room.jpg', 13),
+('pictures/estates/estate-13/kitchen.jpg', 13),
+('pictures/estates/estate-13/bedroom.jpg', 13),
+('pictures/estates/estate-13/bathroom.jpg', 13),
+('pictures/estates/estate-14/exterior.jpg', 14),
+('pictures/estates/estate-14/living-room.jpg', 14),
+('pictures/estates/estate-14/kitchen.jpg', 14),
+('pictures/estates/estate-14/bedroom.jpg', 14),
+('pictures/estates/estate-14/bathroom.jpg', 14),
+('pictures/estates/estate-15/exterior.jpg', 15),
+('pictures/estates/estate-15/living-room.jpg', 15),
+('pictures/estates/estate-15/kitchen.jpg', 15),
+('pictures/estates/estate-15/bedroom.jpg', 15),
+('pictures/estates/estate-15/bathroom.jpg', 15),
+('pictures/estates/estate-16/exterior.jpg', 16),
+('pictures/estates/estate-16/living-room.jpg', 16),
+('pictures/estates/estate-16/kitchen.jpg', 16),
+('pictures/estates/estate-16/bedroom.jpg', 16),
+('pictures/estates/estate-16/bathroom.jpg', 16),
+('pictures/estates/estate-17/exterior.jpg', 17),
+('pictures/estates/estate-17/living-room.jpg', 17),
+('pictures/estates/estate-17/kitchen.jpg', 17),
+('pictures/estates/estate-17/bedroom.jpg', 17),
+('pictures/estates/estate-17/bathroom.jpg', 17),
+('pictures/estates/estate-18/exterior.jpg', 18),
+('pictures/estates/estate-18/living-room.jpg', 18),
+('pictures/estates/estate-18/kitchen.jpg', 18),
+('pictures/estates/estate-18/bedroom.jpg', 18),
+('pictures/estates/estate-18/bathroom.jpg', 18),
+('pictures/estates/estate-19/exterior.jpg', 19),
+('pictures/estates/estate-19/living-room.jpg', 19),
+('pictures/estates/estate-19/kitchen.jpg', 19),
+('pictures/estates/estate-19/bedroom.jpg', 19),
+('pictures/estates/estate-19/bathroom.jpg', 19),
+('pictures/estates/estate-20/exterior.jpg', 20),
+('pictures/estates/estate-20/living-room.jpg', 20),
+('pictures/estates/estate-20/kitchen.jpg', 20),
+('pictures/estates/estate-20/bedroom.jpg', 20),
+('pictures/estates/estate-20/bathroom.jpg', 20),
+('pictures/estates/estate-21/exterior.jpg', 21),
+('pictures/estates/estate-21/living-room.jpg', 21),
+('pictures/estates/estate-21/kitchen.jpg', 21),
+('pictures/estates/estate-21/bedroom.jpg', 21),
+('pictures/estates/estate-21/bathroom.jpg', 21),
+('pictures/estates/estate-22/exterior.jpg', 22),
+('pictures/estates/estate-22/living-room.jpg', 22),
+('pictures/estates/estate-22/kitchen.jpg', 22),
+('pictures/estates/estate-22/bedroom.jpg', 22),
+('pictures/estates/estate-22/bathroom.jpg', 22),
+('pictures/estates/estate-23/exterior.jpg', 23),
+('pictures/estates/estate-23/living-room.jpg', 23),
+('pictures/estates/estate-23/kitchen.jpg', 23),
+('pictures/estates/estate-23/bedroom.jpg', 23),
+('pictures/estates/estate-23/bathroom.jpg', 23),
+('pictures/estates/estate-24/exterior.jpg', 24),
+('pictures/estates/estate-24/living-room.jpg', 24),
+('pictures/estates/estate-24/kitchen.jpg', 24),
+('pictures/estates/estate-24/bedroom.jpg', 24),
+('pictures/estates/estate-24/bathroom.jpg', 24),
+('pictures/estates/estate-25/exterior.jpg', 25),
+('pictures/estates/estate-25/living-room.jpg', 25),
+('pictures/estates/estate-25/kitchen.jpg', 25),
+('pictures/estates/estate-25/bedroom.jpg', 25),
+('pictures/estates/estate-25/bathroom.jpg', 25),
+('pictures/estates/estate-26/exterior.jpg', 26),
+('pictures/estates/estate-26/living-room.jpg', 26),
+('pictures/estates/estate-26/kitchen.jpg', 26),
+('pictures/estates/estate-26/bedroom.jpg', 26),
+('pictures/estates/estate-26/bathroom.jpg', 26),
+('pictures/estates/estate-27/exterior.jpg', 27),
+('pictures/estates/estate-27/living-room.jpg', 27),
+('pictures/estates/estate-27/kitchen.jpg', 27),
+('pictures/estates/estate-27/bedroom.jpg', 27),
+('pictures/estates/estate-27/bathroom.jpg', 27),
+('pictures/estates/estate-28/exterior.jpg', 28),
+('pictures/estates/estate-28/living-room.jpg', 28),
+('pictures/estates/estate-28/kitchen.jpg', 28),
+('pictures/estates/estate-28/bedroom.jpg', 28),
+('pictures/estates/estate-28/bathroom.jpg', 28),
+('pictures/estates/estate-29/exterior.jpg', 29),
+('pictures/estates/estate-29/living-room.jpg', 29),
+('pictures/estates/estate-29/kitchen.jpg', 29),
+('pictures/estates/estate-29/bedroom.jpg', 29),
+('pictures/estates/estate-29/bathroom.jpg', 29),
+('pictures/estates/estate-30/exterior.jpg', 30),
+('pictures/estates/estate-30/living-room.jpg', 30),
+('pictures/estates/estate-30/kitchen.jpg', 30),
+('pictures/estates/estate-30/bedroom.jpg', 30),
+('pictures/estates/estate-30/bathroom.jpg', 30),
+('pictures/estates/estate-31/exterior.jpg', 31),
+('pictures/estates/estate-31/living-room.jpg', 31),
+('pictures/estates/estate-31/kitchen.jpg', 31),
+('pictures/estates/estate-31/bedroom.jpg', 31),
+('pictures/estates/estate-31/bathroom.jpg', 31),
+('pictures/estates/estate-32/exterior.jpg', 32),
+('pictures/estates/estate-32/living-room.jpg', 32),
+('pictures/estates/estate-32/kitchen.jpg', 32),
+('pictures/estates/estate-32/bedroom.jpg', 32),
+('pictures/estates/estate-32/bathroom.jpg', 32),
+('pictures/estates/estate-33/exterior.jpg', 33),
+('pictures/estates/estate-33/living-room.jpg', 33),
+('pictures/estates/estate-33/kitchen.jpg', 33),
+('pictures/estates/estate-33/bedroom.jpg', 33),
+('pictures/estates/estate-33/bathroom.jpg', 33),
+('pictures/estates/estate-34/exterior.jpg', 34),
+('pictures/estates/estate-34/living-room.jpg', 34),
+('pictures/estates/estate-34/kitchen.jpg', 34),
+('pictures/estates/estate-34/bedroom.jpg', 34),
+('pictures/estates/estate-34/bathroom.jpg', 34),
+('pictures/estates/estate-35/exterior.jpg', 35),
+('pictures/estates/estate-35/living-room.jpg', 35),
+('pictures/estates/estate-35/kitchen.jpg', 35),
+('pictures/estates/estate-35/bedroom.jpg', 35),
+('pictures/estates/estate-35/bathroom.jpg', 35),
+('pictures/estates/estate-36/exterior.jpg', 36),
+('pictures/estates/estate-36/living-room.jpg', 36),
+('pictures/estates/estate-36/kitchen.jpg', 36),
+('pictures/estates/estate-36/bedroom.jpg', 36),
+('pictures/estates/estate-36/bathroom.jpg', 36);
 
--- Delete duplicate apartment photos to fix duplicates issue
-DELETE FROM photo WHERE estate_id IN (8, 9, 11, 12, 13, 15, 17, 18, 20, 21, 22, 23, 25, 26, 27, 28, 29, 31, 32, 33, 35);
+-- Descriptions enrichies pour les annonces qui reçoivent les nouvelles galeries.
+UPDATE `estate`
+SET `description` = CASE `estate_id`
+  WHEN 2 THEN 'Maison familiale à Boulogne-Billancourt avec jardin clos, séjour ouvert sur la terrasse et cuisine équipée pensée pour le quotidien. Le niveau nuit réunit quatre chambres, une salle de bains et une salle d''eau, avec un garage et un sous-sol pour compléter les rangements.'
+  WHEN 6 THEN 'Pavillon lumineux à Craponne sur parcelle arborée, idéal pour une famille recherchant de l''espace et du calme. Séjour traversant, cuisine conviviale, trois chambres, garage double et terrasse couverte composent un ensemble facile à vivre.'
+  WHEN 8 THEN 'Appartement familial aux Chartrons, calme sur cour et baigné de lumière grâce à un balcon filant côté séjour. Cuisine indépendante, deux chambres confortables, parking sécurisé et proximité immédiate des écoles en font une adresse pratique et élégante.'
+  WHEN 9 THEN 'Appartement soigné du 16e arrondissement, à deux pas du Bois de Boulogne et des commerces de la rue de la Pompe. Les volumes se prêtent à une décoration haut de gamme avec séjour lumineux, cuisine fonctionnelle, trois chambres et deux salles d''eau.'
+  WHEN 10 THEN 'Chalet rénové à Cluses avec ambiance montagne, belle pièce de vie et vue dégagée sur les reliefs. Isolation récente, poêle chaleureux, cuisine familiale et trois chambres permettent un usage en résidence secondaire comme en télétravail prolongé.'
+  WHEN 11 THEN 'Appartement bourgeois boulevard Haussmann, pensé pour recevoir avec triple réception, bureau et belle hauteur sous plafond. Les prestations anciennes dialoguent avec une cuisine contemporaine, quatre chambres et une cave à vin pour une adresse de prestige.'
+  WHEN 12 THEN 'T3 avec vue Rhône depuis le séjour, situé dans un secteur vivant du Vieux Lyon. Cuisine séparée rénovée, deux chambres au calme sur cour, rangements et cave offrent un équilibre agréable entre charme urbain et confort quotidien.'
+  WHEN 13 THEN 'Appartement ancien au coeur de Bordeaux, rénové avec soin autour de beaux marqueurs patrimoniaux. Parquet, cheminée, cuisine actuelle, deux chambres et salle d''eau lumineuse créent une adresse chaleureuse en hypercentre.'
+  WHEN 14 THEN 'Maison de ville à Clichy avec jardin plein sud et extension véranda, rare pour le secteur. Séjour ouvert, cuisine équipée neuve, trois chambres et espaces de rangement répondent aux besoins d''une vie familiale proche des écoles.'
+  WHEN 15 THEN 'Duplex dernier étage à Lyon 6e avec terrasse privative de 25 m² sans vis-à-vis. La pièce de vie se prolonge naturellement dehors, tandis que la cuisine équipée, les trois chambres, la climatisation réversible, la cave et le box fermé renforcent le confort.'
+  WHEN 16 THEN 'Maison de ville rénovée dans le quartier Fondaudège, organisée autour d''un patio intérieur vitré. Séjour accueillant, cuisine contemporaine, quatre chambres, cave voûtée et garage moto composent un bien rare en plein coeur des Chartrons.'
+  WHEN 17 THEN 'Studio parisien rue des Martyrs, optimisé pour un usage locatif ou un pied-à-terre. La pièce principale profite d''une belle lumière, la cuisine est équipée et la salle d''eau avec fenêtre apporte un vrai confort au quotidien.'
+  WHEN 18 THEN 'T2 lumineux à Lyon 7e avec loggia fermée, parfait pour créer un coin bureau ou jardin d''hiver. La résidence réhabilitée, la cuisine pratique, la chambre séparée et le stationnement libre dans la cour renforcent la simplicité d''usage.'
+  WHEN 19 THEN 'Maison plain-pied à Gradignan avec terrain clos de 600 m² et sous-sol total aménageable. Séjour familial, cuisine ouverte, trois chambres, portail motorisé, fibre optique et panneaux photovoltaïques en font une opportunité complète.'
+  WHEN 20 THEN 'Appartement rénové à Belleville avec exposition généreuse et matériaux choisis. Séjour clair, cuisine contemporaine, deux chambres, salle d''eau soignée et rangements intégrés forment un bien prêt à habiter près du métro ligne 11.'
+  WHEN 21 THEN 'Penthouse lyonnais au dernier étage avec rooftop privatif et prestations haut de gamme. Pièce de vie spectaculaire, cuisine premium, trois chambres, dressing, jacuzzi et domotique créent une adresse confidentielle avec service conciergerie.'
+  WHEN 22 THEN 'Grand appartement bordelais sur les allées de Tourny, pensé pour une famille nombreuse avec cinq pièces et bureau. Parquet chêne, moulures restaurées, deux salles de bains et vue dégagée offrent une combinaison rare au centre-ville.'
+  WHEN 23 THEN 'Appartement de prestige rue du Faubourg Saint-Honoré, avec réception en enfilade et hauteur sous plafond remarquable. La distribution valorise les volumes, quatre chambres, cuisine élégante, climatisation gainable et sécurité renforcée.'
+  WHEN 24 THEN 'Maison villageoise sur les hauteurs de Lyon, avec terrasses en restanques et panorama sur la ville. Le séjour conserve un esprit chaleureux, la cuisine est conviviale, trois chambres, garage et cave à vin naturelle complètent le bien.'
+  WHEN 25 THEN 'Loft artistique issu d''un ancien entrepôt bordelais, avec verrière, grande hauteur et esprit atelier. L''espace principal reste ouvert et spectaculaire, tandis que la cuisine, deux chambres et zones cloisonnées apportent du confort sans perdre le caractère.'
+  WHEN 26 THEN 'Appartement polyvalent rue de Rome, idéal pour concilier habitation et espace de travail. Double salon, bureau séparé, cuisine équipée, deux chambres, immeuble sécurisé et proximité Saint-Lazare donnent une adresse efficace et élégante.'
+  WHEN 27 THEN 'Studio meublé proche place Carnot, pensé comme investissement simple et facile à gérer. Pièce principale claire, coin cuisine bien intégré, espace nuit optimisé et charges faibles assurent une mise en location rapide.'
+  WHEN 28 THEN 'Duplex en immeuble pierre à Bordeaux, organisé entre un rez-de-chaussée séjour-cuisine et un étage nuit. Le patio privatif de 15 m² apporte une respiration rare, avec trois chambres et une ambiance chaleureuse.'
+  WHEN 29 THEN 'Appartement avenue Kléber avec vue partielle sur la Tour Eiffel depuis deux pièces. Rénovation haut de gamme, séjour élégant, cuisine soignée, trois chambres, dressing walk-in et deux caves composent une adresse parisienne recherchée.'
+  WHEN 30 THEN 'Pavillon familial à Bron avec garage accolé et terrain clos de 350 m². Séjour confortable, cuisine séparée, trois chambres et potentiel de rafraîchissement permettent de personnaliser facilement le bien.'
+  WHEN 31 THEN 'T3 des Bassins à flot avec terrasse de 12 m² sans vis-à-vis et accès rapide au tramway. Séjour ouvert, cuisine actuelle, deux chambres et salle d''eau moderne offrent un cadre urbain agréable côté Bacalan.'
+  WHEN 32 THEN 'Appartement familial à Passy avec séjour double, cuisine dinatoire et distribution fluide. Gardienne, ascenseur moderne, deux chambres, beaux rangements et écoles internationales à proximité renforcent l''attrait de cette adresse.'
+  WHEN 33 THEN 'Appartement calme sur cour à Lyon 2e, proche du parc Blandan et des transports. Séjour confortable, cuisine pratique, deux chambres avec placards et chauffage individuel gaz en font un bien simple à vivre.'
+  WHEN 34 THEN 'Villa bordelaise d''exception avec piscine chauffée, pool-house et dépendance maison d''amis. Les volumes généreux accueillent une vaste pièce de vie, une cuisine ouverte, cinq chambres et des extérieurs pensés pour recevoir.'
+  WHEN 35 THEN 'Appartement du Marais historique avec poutres apparentes, parquet et cave voûtée. Séjour de caractère, cuisine fonctionnelle, deux chambres et faibles charges dans une petite copropriété en font une adresse rare.'
+  WHEN 36 THEN 'Grande maison familiale à Charbonnières-les-Bains avec jardin plat et sous-sol semi-enterré. Séjour spacieux, cuisine conviviale, quatre chambres, buanderie, cave et cabanon d''outillage répondent à une vie familiale complète.'
+  ELSE `description`
+END
+WHERE `estate_id` IN (2, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36);
 
 INSERT INTO user_ (first_name, last_name, mail, phone_number, is_admin, is_agent, password) VALUES
 ('Malek', 'Esughi', 'malek@example.com', NULL, 1, 0, '$2y$12$OEOosIFwaSMJ8I.X5FFd6eOEkF3qPax7QU1jcAVuvtwx8cyBQruiC'),
