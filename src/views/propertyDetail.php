@@ -2,7 +2,7 @@
 $page_title = ($data['estate_address'] ?? '') . ' — Ymmo';
 $main_photo = !empty($data['photos'][0]['url_path'])
     ? $data['photos'][0]['url_path']
-    : 'pictures/house/default.jpg';
+    : 'pictures/estates/estate-02/exterior.jpg';
 require __DIR__ . '/partials/layout_start.php';
 require __DIR__ . '/partials/site_header.php';
 ?>
